@@ -9,10 +9,17 @@ Register
    <form action="/register/" method="post">
 {% csrf_token %}
      {{noodle_form.as_p}}
-     {{formset.management_form}}
-     {{formset.as_p}}
+<!--     {{formset.management_form}}
+     {{formset.as_p}}-->
 <input type="submit" value="Register" />
 
    </form>
-
+<style>
+input[type='checkbox'] {
+  display: none;
+}
+label[for='id_player-0-DELETE'] {
+  display: none;
+}
+</style>
  {% endblock %}

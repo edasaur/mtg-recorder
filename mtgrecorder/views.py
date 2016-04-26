@@ -11,23 +11,25 @@ from django.forms.models import inlineformset_factory
 
 def register(request):
     #user = User(username="", password="")
-    form_user = CustomUserCreationForm()#instance=user)
-    ProfileInlineFormset = inlineformset_factory(User, Player, fields=('fun_fact',))
-    formset = ProfileInlineFormset()#instance=user)
+    #form_user = CustomUserCreationForm()#instance=user)
+    #ProfileInlineFormset = inlineformset_factory(User, Player, fields=('DCI',))
+    #formset = ProfileInlineFormset()#instance=user)
     if request.method == 'POST':
         form_user = CustomUserCreationForm(request.POST)#, instance=user)
-        formset = ProfileInlineFormset(request.POST)#, instance=user)
+        #formset = ProfileInlineFormset(request.POST)#, instance=user)
         if form_user.is_valid():
-            created_user = form_user.save(commit=False)
-            formset = ProfileInlineFormset(request.POST, instance=created_user)
-            if formset.is_valid():
-                created_user.save()
+            form_user.save()
+            #formset = ProfileInlineFormset(request.POST, instance=created_user)
+            #if formset.is_valid():
+            #    created_user.save()
                 #formset.save()
-                return HttpResponseRedirect('/register/complete')
+            return HttpResponseRedirect('/register/complete')
+    else:
+        form_user = CustomUserCreationForm()
     token = {}
     token.update(csrf(request))
     token['noodle_form'] = form_user
-    token['formset'] = formset
+    #token['formset'] = formset
     return render(request, 'registration/registration_form.html', context=token)
 
 def registration_complete(request):
