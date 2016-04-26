@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from models import Player
 from models import Match
 from django.contrib.auth.models import User
-from django.forms.models import inlineformset_factory, Q
+from django.forms.models import inlineformset_factory
+from django.db.models import Q
 #def loggedin(request):
 #    return render(request, 'registration/loggedin.html', context={'username': request.user.username})
 
@@ -40,4 +41,4 @@ def registration_complete(request):
 def welcome(request):
     user = request.user
     match_verifications = Match.objects.filter(verified=False).filter(Q(player1=user.player) | Q(player2=user.player))
-    return render(request, 'registration/loggedin.html', context={'first_name': user.get_full_name()})
+    return render(request, 'registration/loggedin.html', context={'first_name': user.get_full_name(), 'unverified_matches': match_verifications})
