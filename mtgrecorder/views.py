@@ -35,4 +35,4 @@ def registration_complete(request):
 
 @login_required(login_url='/login/')
 def welcome(request):
-    return render(request, 'registration/loggedin.html', context={'username': request.user.username})
+    return render(request, 'registration/loggedin.html', context={'first_name': request.user.first_name})
