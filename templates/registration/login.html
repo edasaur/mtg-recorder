@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Log In{% endblock %}
+{% block content %}
+
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+{% csrf_token %}
+<table>
+  {{ form.as_table }}
+</table>
+
+<input type="submit" value="login" />
+</form>
+<a href="/register">register</a>
+
+{% endblock %}
