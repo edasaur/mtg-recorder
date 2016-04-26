@@ -8,8 +8,9 @@ Register
 
    <form action="/register/" method="post">
 {% csrf_token %}
-     {{form_user.as_p}}
-     {{form_player.as_p}}
+     {{noodle_form.as_p}}
+     {{formset.management_form}}
+     {{formset.as_p}}
 <input type="submit" value="Register" />
 
    </form>
