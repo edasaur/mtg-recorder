@@ -41,8 +41,16 @@ def registration_complete(request):
 @login_required(login_url='/login/')
 def welcome(request):
     user = request.user
-    match_verifications = Match.objects.filter(verified=False).filter(Q(player1=user.player) | Q(player2=user.player))
-    return render(request, 'registration/loggedin.html', context={'first_name': user.get_full_name(), 'unverified_matches': match_verifications})
+    match_verifications = list(Match.objects.filter(verified=False).filter(player2=user.player))
+    opponent_ids = map(lambda x: x.player1_id,match_verifications)
+    wins = map(lambda x: x.loss, match_verifications)
+    loss = map(lambda x: x.wins, match_verifications)
+    ties = map(lambda x: x.ties, match_verifications)
+    opponent_names = map(lambda x:list(Player.objects.filter(id=x))[0].user.first_name+' '+list(Player.objects.filter(id=x))[0].user.last_name, opponent_ids)
+    total = []
+    for i in xrange(len(opponent_ids)):
+        total.append((opponent_names[i], wins[i], loss[i], ties[i]))
+    return render(request, 'registration/loggedin.html', context={'first_name': user.first_name+' '+user.last_name, 'opponents': total })
 
 @login_required(login_url='/login/')
 def request_verification(request):
@@ -56,4 +64,5 @@ def request_verification(request):
     else:
         form = MatchRequestForm()
     return render(request, 'request_verification.html', context={'form':form})
+
 

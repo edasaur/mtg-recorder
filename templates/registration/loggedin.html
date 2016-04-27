@@ -4,5 +4,11 @@
 
 <h1>Welcome {{first_name}}!</h1>
 <p>Thank you for logging in.</p>
-<div> {{unverified_matches}}</div>
+<ul>
+{% for opp in opponents %}
+<li> Opponent was {{opp.0}}; You won {{opp.1}} games, lost {{opp.2}} games, and tied {{opp.3}} games</li>
+{% endfor %}
+</ul>
+
+ <a href="/request">Add Match</a>
 {% endblock %}

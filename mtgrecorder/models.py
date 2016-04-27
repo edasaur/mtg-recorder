@@ -27,11 +27,11 @@ class Tournament(models.Model):
     desc = models.CharField(max_length=1000) #description
 
 class Match(models.Model):
-    player1 = models.ForeignKey(Player, related_name='winner') #winner by default
-    player2 = models.ForeignKey(Player, related_name='loser') #loser by default
-    wins = models.PositiveIntegerField(default=0) #player1 wins
-    loss = models.PositiveIntegerField(default=0) #player1 loss
+    player1 = models.ForeignKey(Player, related_name='winner') #sender of match results 
+    player2 = models.ForeignKey(Player, related_name='loser') #verifier of match results
+    wins = models.PositiveIntegerField(default=0) #number of player1 wins
+    loss = models.PositiveIntegerField(default=0) #number of player1 loss
     ties = models.PositiveIntegerField(default=0)
-    date_submitted = models.DateTimeField('date submitted')
+    date_submitted = models.DateTimeField(auto_now_add=True)
     tournament = models.ForeignKey(Tournament)
     verified = models.BooleanField(default=False)
