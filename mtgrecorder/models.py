@@ -34,3 +34,4 @@ class Match(models.Model):
     ties = models.PositiveIntegerField(default=0)
     date_submitted = models.DateTimeField('date submitted')
     tournament = models.ForeignKey(Tournament)
+    verified = models.BooleanField(default=False)
