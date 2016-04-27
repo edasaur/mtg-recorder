@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^register/$', 'mtgrecorder.views.register', name='register'),
     url(r'^register/complete/$', 'mtgrecorder.views.registration_complete', name='registration_complete'),
     url(r'^welcome/', 'mtgrecorder.views.welcome', name='welcome'),
+    url(r'^request/', 'mtgrecorder.views.request_verification', name='request_verification'),
     #url(r'', 'mtgrecorder.views.welcome', name='welcome'),
 ]

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from forms import CustomUserCreationForm
+from forms import MatchRequestForm
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from models import Player
@@ -41,3 +42,17 @@ def welcome(request):
     user = request.user
     match_verifications = Match.objects.filter(verified=False).filter(Q(player1=user.player) | Q(player2=user.player))
     return render(request, 'registration/loggedin.html', context={'first_name': user.get_full_name()})
+
+@login_required(login_url='/login/')
+def request_verification(request):
+    if request.method == "POST":
+        form = MatchRequestForm(request.POST)
+        if form.is_valid():
+            match = form.save()
+            player2 = Player.objects.get(id=match.player2)
+            player2_name = player2.first_name + ' ' + player2.last_name
+            return render(request, 'verification_requested.html', context={'match':match, 'player2_name':player2_name})
+    else:
+        form = MatchRequestForm()
+    return render(request, 'request_verification.html', context={'form':form})
+
