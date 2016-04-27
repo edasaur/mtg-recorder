@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Match Verification Requested!% endblock %}
+{% block content %}
+
+<h1>You have requested {{ player2_name }} to verify the following match.</h1>
+<span>
+	<div>You</div>
+	<div>Wins</div>
+	<div>{{p1_wins}}</div>
+</span>
+<span>
+	<div></div>
+	<div>Ties</div>
+	<div>{{ties}}</div>
+</span>
+<span>
+	<div>Opponent</div>
+	<div>Wins</div>
+	<div>{{p2_wins}}</div>
+</span>
+
+{% endblock %}
