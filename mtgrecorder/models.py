@@ -38,7 +38,11 @@ class Match(models.Model):
     ties = models.PositiveIntegerField(default=0)
     date_submitted = models.DateTimeField(auto_now_add=True)
     tournament = models.ForeignKey(Tournament)
-
+STATUS_CHOICES = (
+    ('1', 'Unverified'),
+    ('2', 'Confirm'),
+    ('3', 'Decline'),
+)
 class ScoreRequest(models.Model):
     player1 = models.ForeignKey(Player, related_name='requester') #sender of match results 
     player2 = models.ForeignKey(Player, related_name='confirmer') #verifier of match results
@@ -47,4 +51,4 @@ class ScoreRequest(models.Model):
     ties = models.PositiveIntegerField(default=0)
     date_submitted = models.DateTimeField(auto_now_add=True)
     tournament = models.ForeignKey(Tournament)
-    verified = models.BooleanField(default=False)        
+    verified = models.IntegerField(choices=STATUS_CHOICES, default=1)

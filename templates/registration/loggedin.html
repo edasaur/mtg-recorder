@@ -4,12 +4,27 @@
 
 <h1>Welcome {{first_name}}!</h1>
 <p>Thank you for logging in.</p>
-<ul>
+<table>
+<tr>
+    <td width="100px"><h4>Opponent</h4></td>
+    <td width="100px"><h4>Record</h4></td>
+    <td width="400px"><h4>Confirmation</h4></td>
+</tr>
 {% for opp in opponents %}
-<li> Opponent was {{opp.0}}; You won {{opp.1}} games, lost {{opp.2}} games, and tied {{opp.3}} games</li>
-<input value="{{ csrf_token }}" type="submit" method="POST" action="mtgrecorder.views.verify_request" name="csrfmiddlewaretoken">
+<tr> 
+    <td>{{opp.0}}</td>
+    <td><lol style="color: green">{{opp.1}}</lol> - <lol style="color: red">{{opp.2}}</lol> - {{opp.3}}</td>
+    <td>
+        <form method="post" action="">
+        {% csrf_token %}
+        <table>
+            {{ opp.4.as_table }}
+        </table>
+        <input type="submit" value="Accept" style="display: inline-block">
+    </td>
+</tr>
 {% endfor %}
-</ul>
+</table>
 
  <a href="/request">Add Match</a>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from forms import CustomUserCreationForm
-from forms import ScoreRequestForm
+from forms import ScoreRequestForm, ConfirmRequestForm
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from models import Player
@@ -40,21 +40,28 @@ def registration_complete(request):
 
 @login_required(login_url='/login/')
 def welcome(request):
+    if request.method == 'POST':
+        form_results = ConfirmRequestForm(request.POST)
+        print form_results.is_valid()
+        if form_results.is_valid():
+            print "valid"
+            form_results.save()
+            return HttpResponseRedirect('/welcome')
     user = request.user
-    match_verifications = list(ScoreRequest.objects.filter(verified=False).filter(player2=user.player))
-    match_ids = map(lambda x: x.id, match_verifications)
-    opponent_ids = map(lambda x: x.player1_id,match_verifications)
-    wins = map(lambda x: x.loss, match_verifications)
-    loss = map(lambda x: x.wins, match_verifications)
-    ties = map(lambda x: x.ties, match_verifications)
+    scoreq_verifications = list(ScoreRequest.objects.filter(verified=1).filter(player2=user.player))
+    #scoreq_ids = map(lambda x: x.id, scoreq_verifications)
+    opponent_ids = map(lambda x: x.player1_id, scoreq_verifications)
+    wins = map(lambda x: x.loss, scoreq_verifications)
+    loss = map(lambda x: x.wins, scoreq_verifications)
+    ties = map(lambda x: x.ties, scoreq_verifications)
     opponent_names = map(lambda x:list(Player.objects.filter(id=x))[0].user.first_name+' '+list(Player.objects.filter(id=x))[0].user.last_name, opponent_ids)
-    total = []
+    scoreRequests = []
     for i in xrange(len(opponent_ids)):
-        total.append((opponent_names[i], wins[i], loss[i], ties[i], match_ids[i]))
+        scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i],ConfirmRequestForm(instance=scoreq_verifications[i])))
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
-    con['opponents'] = total
+    con['opponents'] = scoreRequests
     return render(request, 'registration/loggedin.html', context=con)
 
 @login_required(login_url='/login/')
@@ -67,8 +74,8 @@ def request_verification(request):
             player2_name = player2.user.first_name + ' ' + player2.user.last_name
             p1_wins = match.wins
             ties = match.ties
-            p1_loss = match.loss
-            con = {'match':match, 'player2_name':player2_name, 'p1_wins':p1_wins, 'ties':ties, 'p1_loss':p1_loss}
+            p2_wins = match.loss
+            con = {'match':match, 'player2_name':player2_name, 'p1_wins':p1_wins, 'ties':ties, 'p2_wins':p2_wins}
             return render(request, 'registration/verification_requested.html', context=con)
     else:
         form = ScoreRequestForm(current_user=request.user, initial={'player1': request.user.player})#request.user)
@@ -78,4 +85,4 @@ def request_verification(request):
 def verify_request(request):
     if request.method == "POST":
         print "OIWEHFPOIWHEFOPWIEHFPOWIEHFPOWEIFH"
-        print request.POST        
+        print request.POST 

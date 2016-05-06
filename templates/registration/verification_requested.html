@@ -2,21 +2,24 @@
 {% block title %}Match Verification Requested!{% endblock %}
 {% block content %}
 
-<h1>You have requested {{ player2_name }} to verify the following match.</h1>
+<h3>You have requested {{ player2_name }} to verify the following match.</h3>
 <span>
-	<div>You</div>
-	<div>Wins</div>
-	<div>{{p1_wins}}</div>
+    <table>
+        <h4>
+        <tr>
+            <td align="center">Wins</td>
+            <td align="center">Loss</td>
+            <td align="center">Ties</td>
+        </tr>
+        </h4>
+        <h3>
+        <tr>
+            <td align="center" width="100px" style="color: green">{{p1_wins}}</td>
+            <td align="center" width="100px" style="color: yellow">{{p2_wins}}</td>
+            <td align="center" width="100px" style="color: red">{{ties}}</td>
+        </tr>
+        <h3>
+    </table>
 </span>
-<span>
-	<div></div>
-	<div>Ties</div>
-	<div>{{ties}}</div>
-</span>
-<span>
-	<div>Opponent</div>
-	<div>Wins</div>
-	<div>{{p2_wins}}</div>
-</span>
-
+<a href="/welcome">Back to Home</a>
 {% endblock %}

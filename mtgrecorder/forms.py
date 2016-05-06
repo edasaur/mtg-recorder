@@ -20,4 +20,14 @@ class ScoreRequestForm(forms.ModelForm):
     class Meta:
         model = ScoreRequest
         fields = ("player1", "player2", "wins", "loss", "ties", "tournament")
-
+SELECT_CHOICES = (
+    ('2', 'Confirm'),
+    ('3', 'Decline'),
+)
+class ConfirmRequestForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ConfirmRequestForm, self).__init__(*args, **kwargs)
+        self.fields['verified'].queryset = SELECT_CHOICES
+    class Meta:
+        model = ScoreRequest
+        fields = ("verified",)
