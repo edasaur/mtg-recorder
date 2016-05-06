@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from models import Player, Match
+from models import Player, ScoreRequest
 from django import forms
 
 class CustomUserCreationForm(UserCreationForm):#forms.ModelForm):
@@ -8,7 +8,16 @@ class CustomUserCreationForm(UserCreationForm):#forms.ModelForm):
         model = User
         fields = ("first_name", "last_name", "email",  "username") 
     
-class MatchRequestForm(forms.ModelForm):
+class ScoreRequestForm(forms.ModelForm):
+    def __init__(self, current_user=None, *args, **kwargs):
+        super(ScoreRequestForm, self).__init__(*args, **kwargs)
+        #print args[0].username, args[0].first_name, args[0].last_name, args[0]
+        if current_user is not None:
+            self.fields['player1'].queryset = Player.objects.filter(user=current_user)
+            self.fields['player2'].queryset = Player.objects.exclude(user=current_user)
+    #def clean_player1(self):
+    #    return self.instance.player1   class Meta:
     class Meta:
-        model = Match
+        model = ScoreRequest
         fields = ("player1", "player2", "wins", "loss", "ties", "tournament")
+
