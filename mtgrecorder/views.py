@@ -106,4 +106,63 @@ def confirm_match(request, req_id=None):
 def verify_request(request):
     if request.method == "POST":
         print "OIWEHFPOIWHEFOPWIEHFPOWIEHFPOWEIFH"
-        print request.POST 
+        print request.POST
+
+def wlt(player, match):
+    """ Returns a tuple containing the results for player
+    <OUTCOME>, <WINS>, <LOSS>, <TIES>
+
+    <OUTCOME> is    True if player won the match
+                    False if player lost the match
+                    None if player tied the match
+    """
+    assert player == match.player1 or player == match.player2, "func wlt views"
+    if player == match.player1:
+        wins = match.wins
+        loss = match.loss
+    else:
+        wins = match.loss
+        loss = match.wins
+    ties = match.ties
+    return wins > loss if wins != loss else None, wins, loss, ties    
+
+
+def profile(request, username):
+    player = User.objects.filter(username=username)
+    assert len(player) == 1, "More than one player found with username"
+    player = player[0].player
+    matches = Match.objects.filter(Q(player1=player)|Q(player2=player))
+    matches = matches.order_by('tournament', '-date_submitted')
+    grouped = []
+    last_tournament = None
+    for match in matches:
+        if match.tournament != last_tournament:
+            if last_tournament is not None:
+                grouped.append(tournament)
+            tournament = {
+                'name':match.tournament,
+                'matches':[],
+                'm_wins':0, 'm_loss':0, 'm_ties':0,
+                'g_wins':0, 'm_loss':0, 'm_ties':0,
+            }
+            last_tournament = match.tournament
+        outcome, wins, loss, ties = wlt(player, match)
+        tournament['g_wins'] += wins
+        tournament['g_loss'] += loss
+        tournament['g_ties'] += ties
+        tournament[{True:'m_wins', False:'m_loss', None:'m_ties'}[outcome]] += 1
+    if len(matches):
+        grouped.append(tournament)
+    
+    context = {
+        'g_wins':0, 'g_loss':0, 'g_ties':0,
+        'm_wins':0, 'm_loss':0, 'm_ties':0,
+    }
+    
+    for tournament in grouped:
+        for key in context:
+            context[key] += tournament[key]
+    
+    context['player'] = player
+    context['tournaments'] = grouped
+    return render(request, 'profile/profile.html', context)

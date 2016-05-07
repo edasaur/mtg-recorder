@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% content block %}
+<h1>{{player.user.username}}'s Profile</h1>
+<table>
+    <tr>
+        <td width='100px'><h3>Match Record</h3></td>
+    </tr>
+        <td><lol style="color:green">{{ m_wins }}</lol> - <lol style="color: red">{{ m_loss }}</lol> - {{ m_ties }}</td>
+    <tr>
+        <td width='100px'><h4>Game Record</h4></td>
+    </tr>
+    <tr>
+        <td><lol style="color:green">{{ g_wins }}</lol> - <lol style="color: red">{{ g_loss }}</lol> - {{ g_ties }}</td>
+    </tr>
+</table>
+<h2>Tournaments</h2>
+<table>
+<tr>
+    <td width="100px"><h4>Tournament</h4></td>
+    <td width="100px"><h4>Match Record</h4></td>
+    <td width="100px"><h4>Game Record</h4></td>
+</tr>
+{% for t in tournaments %}
+<tr> 
+    <td>{{t.name}}</td>
+    <td><lol style="color: green">{{t.m_wins}}</lol> - <lol style="color: red">{{t.m_loss}}</lol> - {{t.m_ties}}</td>
+    <td><lol style="color: green">{{t.g_wins}}</lol> - <lol style="color: red">{{t.g_loss}}</lol> - {{t.g_ties}}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+{% endblock %}
