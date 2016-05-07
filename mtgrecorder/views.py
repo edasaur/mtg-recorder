@@ -91,15 +91,16 @@ def confirm_match(request, req_id=None):
             print form
             if form.is_valid() and sr.player2.user.username == request.user.username: #and needs to verify player2 is current player lol
                 form.save()
-                #Save fields into a Match object now
-                match = Match()
-                match.player1 = sr.player1
-                match.player2 = sr.player2
-                match.wins = sr.wins
-                match.loss = sr.loss
-                match.ties = sr.ties
-                match.tournament = sr.tournament
-                match.save()
+                if int(request.POST['verified']) == 2:
+                    #Save fields into a Match object now
+                    match = Match()
+                    match.player1 = sr.player1
+                    match.player2 = sr.player2
+                    match.wins = sr.wins
+                    match.loss = sr.loss
+                    match.ties = sr.ties
+                    match.tournament = sr.tournament
+                    match.save()
                 return HttpResponseRedirect('/welcome/') 
             return HttpResponseRedirect('/welcome/')
     else:
