@@ -5,35 +5,41 @@
 <h1>Welcome <a href="/profile/{{username}}">{{first_name}}</a>!</h1>
 <p>Thank you for logging in.</p>
 <div class="col-xs-6">
+<h4>Matches to confirm</h4>
 <table>
 <tr>
-    <td width="100px"><h4>Opponent</h4></td>
-    <td width="100px"><h4>Record</h4></td>
-    <td width="400px"><h4>Confirmation</h4></td>
+    <td width="100px"><b>Opponent</b></td>
+    <td width="100px"><b>Record</b></td>
+    <td width="400px"><b>Confirmation</b></td>
 </tr>
-{% for opp in opponents %}
-<tr> 
-    <td><a href="/profile/{{opp.6}}">{{opp.0}}</a></td>
-    <td>{% include "score.html" with w=opp.1 l=opp.2 t=opp.3 %}</td>
-    <td>
-        <form method="post" action={{opp.4}}>
-        {% csrf_token %}
-        <table>
-            {{ opp.5.as_table }}
-        </table>
-        <input type="submit" value="Accept" style="display: inline-block">
-    </td>
-</tr>
-{% endfor %}
+{% if opponents %}
+    {% for opp in opponents %}
+    <tr> 
+        <td><a href="/profile/{{opp.6}}">{{opp.0}}</a></td>
+        <td>{% include "score.html" with w=opp.1 l=opp.2 t=opp.3 %}</td>
+        <td>
+            <form method="post" action={{opp.4}}>
+            {% csrf_token %}
+            <table>
+                {{ opp.5.as_table }}
+            </table>
+            <input type="submit" value="Accept" style="display: inline-block">
+        </td>
+    </tr>
+    {% endfor %}
 </table>
+{% else %}
+</table>
+    <em style="margin-left: 50px">No requests at this time.</em>
+{% endif %}
 </div>
 <div class="col-xs-6">
     <h4>Tournaments</h4>
     <table>
         <tr>
-            <td width="100px">Host</td>
-            <td width="200px">Name</td>
-            <td width="400px">Description</td>
+            <td width="150px"><b>Host</b></td>
+            <td width="250px"><b>Name</b></td>
+            <td width="400px"><b>Description</b></td>
         </tr>
         {% for tourn in tournaments_in %}
             <tr>
@@ -42,6 +48,9 @@
                 <td>{{ tourn.desc }}</td>
             <tr>
         {% endfor %}
+        {% if not tournaments_in %}
+            <em style="margin-left: 50px">No tournaments at this time.</em>
+        {% endif %}
     </table>
 </div>
 {% endblock %}
