@@ -19,12 +19,29 @@
     <td width="100px"><h4>Tournament</h4></td>
     <td width="100px"><h4>Match Record</h4></td>
     <td width="100px"><h4>Game Record</h4></td>
+    <td width="400px"><h4>Matches</h4></td>
 </tr>
 {% for t in tournaments %}
 <tr> 
     <td>{{t.name}}</td>
     <td><lol style="color: green">{{t.m_wins}}</lol> - <lol style="color: red">{{t.m_loss}}</lol> - {{t.m_ties}}</td>
     <td><lol style="color: green">{{t.g_wins}}</lol> - <lol style="color: red">{{t.g_loss}}</lol> - {{t.g_ties}}</td>
+    <td>
+        <table>
+            <tr> 
+                <td width="100px"><h5>Opponent</h5></td>
+                <td width="100px"><h5>Outcome</h5></td>
+                <td width="100px"><h5>Score</h5></td>       
+            </tr>
+            {% for m in t.matches %}
+            <tr>
+                <td><a href="/profile/{{m.opponent.user.username}}">{{m.opponent.user.first_name}} {{m.opponent.user.last_name}}</a></td>
+                <td>{{m.outcome}}</td>
+                <td><lol style="color: green">{{m.wins}}</lol> - <lol style="color: red">{{m.loss}}</lol> - {{m.ties}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </td>
 </tr>
 {% endfor %}
 </table>
