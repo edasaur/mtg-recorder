@@ -5,7 +5,7 @@ from forms import ScoreRequestForm, ConfirmRequestForm
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from models import Player
-from models import Match, ScoreRequest
+from models import Match, ScoreRequest, Tournament
 from django.contrib.auth.models import User
 from django.forms.models import inlineformset_factory
 from django.db.models import Q
@@ -55,12 +55,14 @@ def welcome(request):
     for i in xrange(len(opponent_ids)):
         scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i]), opponent_usernames[i]))
     #Gathering info on which tournaments you're in
+    tournaments_in = Tournament.objects.filter(participants__user=request.user)
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
     con['opponents'] = scoreRequests
     con['username'] = user.username
     con['profile_url'] = '/profile/'+user.username
+    con['tournaments_in'] = tournaments_in
     return render(request, 'registration/loggedin.html', context=con)
 
 @login_required(login_url='/login/')

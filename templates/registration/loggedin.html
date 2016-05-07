@@ -28,6 +28,18 @@
 </table>
 </div>
 <div class="col-xs-6">
-    COLUMN 2
+    Tournaments
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+        </tr>
+        {% for tourn in tournament_in %}
+            <tr>
+                <td>{{ tourn }}</td>
+                <td>{{ tourn.desc }}</td>
+            <tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
