@@ -44,14 +44,14 @@ def welcome(request):
     scoreq_verifications = list(ScoreRequest.objects.filter(verified=1).filter(player2=user.player))
     scoreq_ids = map(lambda x: x.id, scoreq_verifications)
     urls = map(lambda x: '/match/'+str(x), scoreq_ids)
-    opponent_ids = map(lambda x: x.player1_id, scoreq_verifications)
+    opponent_usernames = map(lambda x: x.player1.user.username, scoreq_verifications)
     wins = map(lambda x: x.loss, scoreq_verifications)
     loss = map(lambda x: x.wins, scoreq_verifications)
     ties = map(lambda x: x.ties, scoreq_verifications)
     opponent_names = map(lambda x:list(Player.objects.filter(id=x))[0].user.first_name+' '+list(Player.objects.filter(id=x))[0].user.last_name, opponent_ids)
     scoreRequests = []
     for i in xrange(len(opponent_ids)):
-        scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i])))
+        scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i]), opponent_usernames[i]))
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name

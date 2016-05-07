@@ -12,7 +12,7 @@
 </tr>
 {% for opp in opponents %}
 <tr> 
-    <td>{{opp.0}}</td>
+    <td><a href="/profile/{{opp.6}}">{{opp.0}}</a></td>
     <td><lol style="color: green">{{opp.1}}</lol> - <lol style="color: red">{{opp.2}}</lol> - {{opp.3}}</td>
     <td>
         <form method="post" action={{opp.4}}>
