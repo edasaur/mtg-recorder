@@ -40,9 +40,9 @@ class Match(models.Model):
     tournament = models.ForeignKey(Tournament)
 
 STATUS_CHOICES = (
-    ('1', 'Unverified'),
-    ('2', 'Confirm'),
-    ('3', 'Decline'),
+    (1, 'Unverified'),
+    (2, 'Confirm'),
+    (3, 'Decline'),
 )
 
 class ScoreRequest(models.Model):

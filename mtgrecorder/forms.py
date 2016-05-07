@@ -21,8 +21,8 @@ class ScoreRequestForm(forms.ModelForm):
         model = ScoreRequest
         fields = ("player1", "player2", "wins", "loss", "ties", "tournament")
 SELECT_CHOICES = (
-    ('2', 'Confirm'),
-    ('3', 'Decline'),
+    (2, 'Confirm'),
+    (3, 'Decline'),
 )
 
 class ConfirmRequestForm(forms.ModelForm):

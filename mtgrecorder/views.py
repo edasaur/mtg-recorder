@@ -81,11 +81,12 @@ def confirm_match(request, req_id=None):
         if req_id is not None:
             try:
                 sr = ScoreRequest.objects.get(id=req_id)
-                print sr.loss
+                print sr
             except:
                 print "bad stuff is happening :("
                 return HttpResponseRedirect('/welcome/')
             form = ConfirmRequestForm(request.POST, instance=sr)
+            print form.errors
             if form.is_valid():
                 form.save()
                 print "Hallelujia"
