@@ -122,11 +122,13 @@ def wlt(player, match):
     if player == match.player1:
         wins = match.wins
         loss = match.loss
+        opp = match.player2
     else:
         wins = match.loss
         loss = match.wins
+        opp = match.player1
     ties = match.ties
-    return wins > loss if wins != loss else None, wins, loss, ties    
+    return wins > loss if wins != loss else None, wins, loss, ties, opp
 
 
 def profile(request, username):
@@ -148,11 +150,19 @@ def profile(request, username):
                 'g_wins':0, 'g_loss':0, 'g_ties':0,
             }
             last_tournament = match.tournament
-        outcome, wins, loss, ties = wlt(player, match)
+        outcome, wins, loss, ties, opp = wlt(player, match)
         tournament['g_wins'] += wins
         tournament['g_loss'] += loss
         tournament['g_ties'] += ties
         tournament[{True:'m_wins', False:'m_loss', None:'m_ties'}[outcome]] += 1
+        clean_match = {
+            'opponent':opp,
+            'wins':wins,
+            'loss':loss,
+            'ties':ties,
+            'outcome': {True:'Win', False:'Lose', None:'Tie'}[outcome],
+        }
+        tournament['matches'].append(clean_match)
     if len(matches):
         grouped.append(tournament)
     
