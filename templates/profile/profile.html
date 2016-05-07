@@ -16,7 +16,7 @@
 <h2>Tournaments</h2>
 <table>
 <tr>
-    <td width="100px"><h4>Tournament</h4></td>
+    <td width="150px"><h4>Tournament</h4></td>
     <td width="100px"><h4>Match Record</h4></td>
     <td width="100px"><h4>Game Record</h4></td>
     <td width="400px"><h4>Matches</h4></td>
@@ -35,7 +35,9 @@
             </tr>
             {% for m in t.matches %}
             <tr>
-                <td>{% include "p_link.html" with username=m.opponent.user.username display_name="{{m.opponent.user.last_name}}, {{m.opponent.user.first_name}}" %}}}"></td>
+                {% with m.opponent.user.first_name|add:" "|add:m.opponent.user.last_name as disp %}
+                    <td>{% include "p_link.html" with username=m.opponent.user.username display_name=disp %}</td>
+                {% endwith %}
                 <td>{{m.outcome}}</td>
                 <td>{% include "score.html" with w=m.wins l=m.loss t=m.ties %}</td>
             </tr>

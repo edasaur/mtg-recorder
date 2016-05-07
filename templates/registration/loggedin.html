@@ -41,16 +41,18 @@
             <td width="250px"><b>Name</b></td>
             <td width="400px"><b>Description</b></td>
         </tr>
-        {% for tourn in tournaments_in %}
-            <tr>
-                <td>{% include "p_link.html" with username=tourn.host.user.username display_name=tourn.host %}</a></td>
-                <td>{{ tourn.name }}</td>
-                <td>{{ tourn.desc }}</td>
-            <tr>
-        {% endfor %}
-        {% if not tournaments_in %}
-            <em style="margin-left: 50px">No tournaments at this time.</em>
+        {% if tournaments_in %}
+            {% for tourn in tournaments_in %}
+                <tr>
+                    <td>{% include "p_link.html" with username=tourn.host.user.username display_name=tourn.host %}</a></td>
+                    <td>{{ tourn.name }}</td>
+                    <td>{{ tourn.desc }}</td>
+                <tr>
+            {% endfor %}
+            </table>
+        {% else %}
+            </table>
+            <em style="margin-left: 100px">No tournaments at this time.</em>
         {% endif %}
-    </table>
 </div>
 {% endblock %}
