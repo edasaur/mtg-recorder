@@ -143,7 +143,7 @@ def profile(request, username):
                 'name':match.tournament,
                 'matches':[],
                 'm_wins':0, 'm_loss':0, 'm_ties':0,
-                'g_wins':0, 'm_loss':0, 'm_ties':0,
+                'g_wins':0, 'g_loss':0, 'g_ties':0,
             }
             last_tournament = match.tournament
         outcome, wins, loss, ties = wlt(player, match)
