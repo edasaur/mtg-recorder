@@ -57,6 +57,7 @@ def welcome(request):
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
     con['opponents'] = scoreRequests
+    con['username'] = user.username
     return render(request, 'registration/loggedin.html', context=con)
 
 @login_required(login_url='/login/')
