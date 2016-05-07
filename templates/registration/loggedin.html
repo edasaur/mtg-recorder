@@ -4,6 +4,8 @@
 
 <h1>Welcome <a href="/profile/{{username}}">{{first_name}}</a>!</h1>
 <p>Thank you for logging in.</p>
+<div class="col-xs-6">
+<a href="/request">Add Match</a>
 <table>
 <tr>
     <td width="100px"><h4>Opponent</h4></td>
@@ -25,6 +27,8 @@
 </tr>
 {% endfor %}
 </table>
-
- <a href="/request">Add Match</a>
+</div>
+<div class="col-xs-6">
+    COLUMN 2
+</div>
 {% endblock %}
