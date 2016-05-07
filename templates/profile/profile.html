@@ -35,7 +35,7 @@
             </tr>
             {% for m in t.matches %}
             <tr>
-                <td><a href="/profile/{{m.opponent.user.username}}">{{m.opponent.user.first_name}} {{m.opponent.user.last_name}}</a></td>
+                <td>{% include "p_link.html" with username=m.opponent.user.username display_name="{{m.opponent.user.last_name}}, {{m.opponent.user.first_name}}" %}}}"></td>
                 <td>{{m.outcome}}</td>
                 <td>{% include "score.html" with w=m.wins l=m.loss t=m.ties %}</td>
             </tr>

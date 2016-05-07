@@ -2,7 +2,7 @@
 {% block title %}Logged In{% endblock %}
 {% block content %}
 
-<h1>Welcome <a href="/profile/{{username}}">{{first_name}}</a>!</h1>
+<h1>Welcome {% include "p_link.html" with username=username display_name=first_name %}!</h1>
 <p>Thank you for logging in.</p>
 <div class="col-xs-6">
 <h4>Matches to confirm</h4>
@@ -15,7 +15,7 @@
 {% if opponents %}
     {% for opp in opponents %}
     <tr> 
-        <td><a href="/profile/{{opp.6}}">{{opp.0}}</a></td>
+        <td>{% include "p_link.html" with username=opp.6 display_name=opp.0 %}</td>
         <td>{% include "score.html" with w=opp.1 l=opp.2 t=opp.3 %}</td>
         <td>
             <form method="post" action={{opp.4}}>
@@ -43,7 +43,7 @@
         </tr>
         {% for tourn in tournaments_in %}
             <tr>
-                <td><a href="/profile/{{ tourn.host.user.username }}">{{ tourn.host }}</a></td>
+                <td>{% include "p_link.html" with username=tourn.host.user.username display_name=tourn.host %}</a></td>
                 <td>{{ tourn.name }}</td>
                 <td>{{ tourn.desc }}</td>
             <tr>
