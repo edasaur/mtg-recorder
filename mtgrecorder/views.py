@@ -58,6 +58,7 @@ def welcome(request):
     con['first_name'] = user.first_name+' '+user.last_name
     con['opponents'] = scoreRequests
     con['username'] = user.username
+    con['profile_url'] = '/profile/'+user.username
     return render(request, 'registration/loggedin.html', context=con)
 
 @login_required(login_url='/login/')
@@ -72,10 +73,11 @@ def request_verification(request):
             ties = match.ties
             p2_wins = match.loss
             con = {'match':match, 'player2_name':player2_name, 'p1_wins':p1_wins, 'ties':ties, 'p2_wins':p2_wins}
+            con['profile_url'] = '/profile/'+request.user.username
             return render(request, 'registration/verification_requested.html', context=con)
     else:
         form = ScoreRequestForm(current_user=request.user, initial={'player1': request.user.player})#request.user)
-    return render(request, 'registration/request_verification.html', context={'form':form, 'first_name':request.user.first_name, 'last_name':request.user.last_name})
+    return render(request, 'registration/request_verification.html', context={'form':form, 'first_name':request.user.first_name, 'last_name':request.user.last_name, 'profile_url':'/profile/'+request.user.username})
 
 @login_required(login_url='/login/')
 def confirm_match(request, req_id=None):
@@ -104,12 +106,6 @@ def confirm_match(request, req_id=None):
         print "Only POST requests for now"
         return HttpResponseRedirect('/welcome/')
 
-@login_required(login_url='/login/')
-def verify_request(request):
-    if request.method == "POST":
-        print "OIWEHFPOIWHEFOPWIEHFPOWIEHFPOWEIFH"
-        print request.POST
-
 def wlt(player, match):
     """ Returns a tuple containing the results for player
     <OUTCOME>, <WINS>, <LOSS>, <TIES>
@@ -128,7 +124,7 @@ def wlt(player, match):
     ties = match.ties
     return wins > loss if wins != loss else None, wins, loss, ties    
 
-
+@login_required(login_url='/login/')
 def profile(request, username):
     player = User.objects.filter(username=username)
     assert len(player) == 1, "More than one player found with username"
@@ -167,4 +163,5 @@ def profile(request, username):
     
     context['player'] = player
     context['tournaments'] = grouped
+    context['profile_url'] = '/profile/'+request.user.username
     return render(request, 'profile/profile.html', context)
