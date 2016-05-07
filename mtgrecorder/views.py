@@ -41,6 +41,7 @@ def registration_complete(request):
 @login_required(login_url='/login/')
 def welcome(request):
     user = request.user
+    #Gathering info on match requests
     scoreq_verifications = list(ScoreRequest.objects.filter(verified=1).filter(player2=user.player))
     scoreq_ids = map(lambda x: x.id, scoreq_verifications)
     urls = map(lambda x: '/match/'+str(x), scoreq_ids)
@@ -53,6 +54,7 @@ def welcome(request):
     scoreRequests = []
     for i in xrange(len(opponent_ids)):
         scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i]), opponent_usernames[i]))
+    #Gathering info on which tournaments you're in
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
