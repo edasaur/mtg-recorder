@@ -44,6 +44,7 @@ def welcome(request):
     scoreq_verifications = list(ScoreRequest.objects.filter(verified=1).filter(player2=user.player))
     scoreq_ids = map(lambda x: x.id, scoreq_verifications)
     urls = map(lambda x: '/match/'+str(x), scoreq_ids)
+    opponent_ids = map(lambda x: x.player1_id, scoreq_verifications)
     opponent_usernames = map(lambda x: x.player1.user.username, scoreq_verifications)
     wins = map(lambda x: x.loss, scoreq_verifications)
     loss = map(lambda x: x.wins, scoreq_verifications)
