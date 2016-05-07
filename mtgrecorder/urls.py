@@ -30,4 +30,7 @@ urlpatterns = [
     url(r'^request/', 'mtgrecorder.views.request_verification', name='request_verification'),
     url(r'^verify_request/', 'mtgrecorder.views.verify_request', name='verify_request'),
     #url(r'', 'mtgrecorder.views.welcome', name='welcome'),
+    url(r'^match/(\d+)$', 'mtgrecorder.views.confirm_match', name='confirm_match'),
+    # Below should be all confirmed match results...
+    #url(r'^answer/$',      'app.views.xxx_test1', name='newAnswer '),
 ]

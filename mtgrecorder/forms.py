@@ -24,10 +24,13 @@ SELECT_CHOICES = (
     ('2', 'Confirm'),
     ('3', 'Decline'),
 )
+
 class ConfirmRequestForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ConfirmRequestForm, self).__init__(*args, **kwargs)
-        self.fields['verified'].queryset = SELECT_CHOICES
+        self.fields['verified'] = forms.ChoiceField(label=u'', choices=SELECT_CHOICES, widget=forms.Select(), required=True)
+
     class Meta:
         model = ScoreRequest
         fields = ("verified",)
+

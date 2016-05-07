@@ -15,10 +15,10 @@
     <td>{{opp.0}}</td>
     <td><lol style="color: green">{{opp.1}}</lol> - <lol style="color: red">{{opp.2}}</lol> - {{opp.3}}</td>
     <td>
-        <form method="post" action="">
+        <form method="post" action={{opp.4}}>
         {% csrf_token %}
         <table>
-            {{ opp.4.as_table }}
+            {{ opp.5.as_table }}
         </table>
         <input type="submit" value="Accept" style="display: inline-block">
     </td>

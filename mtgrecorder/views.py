@@ -40,16 +40,10 @@ def registration_complete(request):
 
 @login_required(login_url='/login/')
 def welcome(request):
-    if request.method == 'POST':
-        form_results = ConfirmRequestForm(request.POST)
-        print form_results.is_valid()
-        if form_results.is_valid():
-            print "valid"
-            form_results.save()
-            return HttpResponseRedirect('/welcome')
     user = request.user
     scoreq_verifications = list(ScoreRequest.objects.filter(verified=1).filter(player2=user.player))
-    #scoreq_ids = map(lambda x: x.id, scoreq_verifications)
+    scoreq_ids = map(lambda x: x.id, scoreq_verifications)
+    urls = map(lambda x: '/match/'+str(x), scoreq_ids)
     opponent_ids = map(lambda x: x.player1_id, scoreq_verifications)
     wins = map(lambda x: x.loss, scoreq_verifications)
     loss = map(lambda x: x.wins, scoreq_verifications)
@@ -57,7 +51,7 @@ def welcome(request):
     opponent_names = map(lambda x:list(Player.objects.filter(id=x))[0].user.first_name+' '+list(Player.objects.filter(id=x))[0].user.last_name, opponent_ids)
     scoreRequests = []
     for i in xrange(len(opponent_ids)):
-        scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i],ConfirmRequestForm(instance=scoreq_verifications[i])))
+        scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i])))
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
@@ -80,6 +74,27 @@ def request_verification(request):
     else:
         form = ScoreRequestForm(current_user=request.user, initial={'player1': request.user.player})#request.user)
     return render(request, 'registration/request_verification.html', context={'form':form, 'first_name':request.user.first_name, 'last_name':request.user.last_name})
+
+@login_required(login_url='/login/')
+def confirm_match(request, req_id=None):
+    if request.method == "POST":
+        if req_id is not None:
+            try:
+                sr = ScoreRequest.objects.get(id=req_id)
+                print sr.loss
+            except:
+                print "bad stuff is happening :("
+                return HttpResponseRedirect('/welcome/')
+            form = ConfirmRequestForm(request.POST, instance=sr)
+            if form.is_valid():
+                form.save()
+                print "Hallelujia"
+                return HttpResponseRedirect('/welcome/') 
+            print form.is_valid()
+            return HttpResponseRedirect('/welcome/')
+    else:
+        print "Only POST requests for now"
+        return HttpResponseRedirect('/welcome/')
 
 @login_required(login_url='/login/')
 def verify_request(request):
