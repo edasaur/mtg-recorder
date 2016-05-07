@@ -14,7 +14,7 @@
 {% for opp in opponents %}
 <tr> 
     <td><a href="/profile/{{opp.6}}">{{opp.0}}</a></td>
-    <td><lol style="color: green">{{opp.1}}</lol> - <lol style="color: red">{{opp.2}}</lol> - {{opp.3}}</td>
+    <td>{% include "score.html" with w=opp.1 l=opp.2 t=opp.3 %}</td>
     <td>
         <form method="post" action={{opp.4}}>
         {% csrf_token %}
