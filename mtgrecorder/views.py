@@ -55,7 +55,8 @@ def welcome(request):
     for i in xrange(len(opponent_ids)):
         scoreRequests.append((opponent_names[i], wins[i], loss[i], ties[i], urls[i], ConfirmRequestForm(instance=scoreq_verifications[i]), opponent_usernames[i]))
     #Gathering info on which tournaments you're in
-    tournaments_in = Tournament.objects.filter(participants__user=request.user)
+    tournaments_in = Tournament.objects.filter(participants__DCI=request.user.player.DCI)
+    print tournaments_in
     con = {}
     con.update(csrf(request))
     con['first_name'] = user.first_name+' '+user.last_name
