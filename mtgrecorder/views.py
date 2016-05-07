@@ -81,17 +81,22 @@ def confirm_match(request, req_id=None):
         if req_id is not None:
             try:
                 sr = ScoreRequest.objects.get(id=req_id)
-                print sr
             except:
-                print "bad stuff is happening :("
                 return HttpResponseRedirect('/welcome/')
             form = ConfirmRequestForm(request.POST, instance=sr)
-            print form.errors
-            if form.is_valid():
+            print form
+            if form.is_valid() and sr.player2.user.username == request.user.username: #and needs to verify player2 is current player lol
                 form.save()
-                print "Hallelujia"
+                #Save fields into a Match object now
+                match = Match()
+                match.player1 = sr.player1
+                match.player2 = sr.player2
+                match.wins = sr.wins
+                match.loss = sr.loss
+                match.ties = sr.ties
+                match.tournament = sr.tournament
+                match.save()
                 return HttpResponseRedirect('/welcome/') 
-            print form.is_valid()
             return HttpResponseRedirect('/welcome/')
     else:
         print "Only POST requests for now"
