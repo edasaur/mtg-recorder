@@ -24,9 +24,10 @@ def create_player_for_new_user(sender, created, instance, **kwargs):
         player.save()
 
 class Tournament(models.Model):
-    host = models.ForeignKey(Player)
+    host = models.ForeignKey(Player, related_name="host")
     name = models.CharField(max_length=200)
     desc = models.CharField(max_length=1000) #description
+    participants = models.ManyToManyField(Player)
     def __unicode__(self):
         return u'{}\'s {}'.format(self.host.user.username, self.name)
 
