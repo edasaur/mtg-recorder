@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from forms import CustomUserCreationForm
-from forms import ScoreRequestForm, ConfirmRequestForm
+from forms import ScoreRequestForm, ConfirmRequestForm, TournamentCreationForm
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from models import Player
@@ -133,6 +133,17 @@ def wlt(player, match):
     return wins > loss if wins != loss else None, wins, loss, ties, opp
 
 @login_required(login_url='/login/')
+def add_tournament(request):
+    if request.method == "POST":
+        form = TournamentCreationForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+        return HttpResponseRedirect('/welcome/')
+    else:
+        form=TournamentCreationForm(current_user=request.user)
+    return render(request, 'tournament/request_verification.html', context={'form':form,})
+
+@login_required(login_url='/login/')
 def profile(request, username):
     player = User.objects.filter(username=username)
     assert len(player) == 1, "More than one player found with username"
@@ -181,3 +192,6 @@ def profile(request, username):
     context['tournaments'] = grouped
     context['profile_url'] = '/profile/'+request.user.username
     return render(request, 'profile/profile.html', context)
+
+
+
