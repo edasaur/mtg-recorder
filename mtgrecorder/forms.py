@@ -15,6 +15,7 @@ class ScoreRequestForm(forms.ModelForm):
         if current_user is not None:
             self.fields['player1'].queryset = Player.objects.filter(user=current_user)
             self.fields['player2'].queryset = Player.objects.exclude(user=current_user)
+            self.fields['tournament'].queryset = Tournament.objects.filter(participants__user=current_user)
     #def clean_player1(self):
     #    return self.instance.player1   class Meta:
     class Meta:
